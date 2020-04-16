@@ -1,12 +1,18 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	"pages": [
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "瓦力工坊"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/platform/smart-elevator/smart-elevator",
+            "style" : {
+				"navigationBarTitleText": "智慧电梯"
+			}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

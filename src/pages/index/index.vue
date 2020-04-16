@@ -1,8 +1,7 @@
 <template>
 	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view>
-			<text class="title">{{title}}</text>
+		<view class="plat-item">
+			<navigator url="/pages/platform/smart-elevator/smart-elevator">智慧电梯</navigator>
 		</view>
 	</view>
 </template>
@@ -10,9 +9,7 @@
 <script>
 	export default {
 		data() {
-			return {
-				title: 'Hello'
-			}
+			return {}
 		},
 		onLoad() {
 
@@ -23,10 +20,10 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	.content {
 		text-align: center;
-		height: 400upx;
+		height: 100vh;
 	}
 
 	.logo {
