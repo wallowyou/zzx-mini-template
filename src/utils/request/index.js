@@ -1,6 +1,6 @@
 import Request from './request';
 // 创建一个实例，实例配置
-const baseUrl = process.env.NODE_ENV === 'development' ?  'https://property.wallowyou.cn:5449/' : 'https://property.wallowyou.cn:5449/'
+const baseUrl = process.env.NODE_ENV === 'development' ?  'http://localhost:8090' : 'https://property.wallowyou.cn:5449/'
 const http = new Request()
 http.setConfig((config) => { /* 设置全局配置 */
   config.baseUrl = baseUrl /* 根域名不同 */
@@ -52,12 +52,12 @@ http.interceptor.response((response) => { /* 请求之后拦截器 */
 	以下为请求各个api请求方法,之后专门导出
 */
 // 登录
-const login = (data) => {
-	return http.post('/api/authenticate', data);
+const test = () => {
+	return http.get('/api/test')
 }
 
 export default { 
   baseUrl,
-  login,
+  test
 }
 

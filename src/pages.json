@@ -3,16 +3,37 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "瓦力工坊"
+				"navigationBarTitleText": " 主页"
 			}
 		}
 	    ,{
-            "path" : "pages/platform/smart-elevator/smart-elevator",
+            "path" : "pages/component/index",
             "style" : {
-				"navigationBarTitleText": "智慧电梯"
+				"navigationBarTitleText": "组件"
 			}
         }
     ],
+	"tabBar": {
+		"color": "#707070",
+		"selectedColor": "#1296db",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"height": "50px",
+		"fontSize": "10px",
+		"iconWidth": "24px",
+		"list": [{
+			"pagePath": "pages/index/index",
+			"iconPath": "static/img/home.png",
+			"selectedIconPath": "static/img/home_selected.png",
+			"text": "首页"
+		},
+		{
+			"pagePath": "pages/component/index",
+			"iconPath": "static/img/component.png",
+			"selectedIconPath": "static/img/component-selected.png",
+			"text": "组件"
+		}]
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
