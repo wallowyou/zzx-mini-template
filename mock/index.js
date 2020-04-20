@@ -6,15 +6,45 @@ const cors = require('koa2-cors');
 const testList = [
 	{
 		id: 1,
-		name: 'React'
+		content: '任务1:完成框架的搭建',
+		createTime: 1586649600000,
+		state: 0 // 0：表示待办， 1：表示已完成
 	},
 	{
 		id: 2,
-		name: 'Vue'
+		content: '任务2:通用方法的封装',
+		createTime: 1586736000000,
+		state: 1
 	},
 	{
 		id: 3,
-		name: 'Angular'
+		content: '任务3:mock服务的搭建',
+		createTime: 1586822400000,
+		state: 0
+	},
+	{
+		id: 4,
+		content: '任务4:通用样式编写',
+		createTime: 1586822400000,
+		state: 1
+	},
+	{
+		id: 5,
+		content: '任务5:布局搭建',
+		createTime: 1586822400000,
+		state: 0
+	},
+	{
+		id: 6,
+		content: '任务6:错误处理',
+		createTime: 1586822400000,
+		state: 0
+	},
+	{
+		id: 7,
+		content: '任务7:数据对接',
+		createTime: 1586822400000,
+		state: 0
 	}
 ];
 app.use(bodyParser());

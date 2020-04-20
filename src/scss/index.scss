@@ -1,0 +1,77 @@
+/* 
+*通用样式 
+*这里是也页面通用的一些样式以及总体布局样式
+*/
+.content {
+	width: 100%;
+	min-height: 100vh;
+}
+/*表格通用样式*/
+.zzx-form {
+	box-sizing: border-box;
+	width: 100%;
+	padding: 0 30upx;
+}
+.zzx-form-btn {
+	width:560upx;
+	height:90upx;
+	background:linear-gradient(180deg,rgba(28,173,251,1) 0%,rgba(61,190,253,1) 100%);
+	box-shadow:0upx 3upx 6upx rgba(0,0,0,0.16);
+	border-radius:45upx;
+	color: #ffffff;
+	&[disabled]:not([type]) {
+		color: #ffffff;
+		width:560upx;
+		height:90upx;
+		background:rgba(221,221,221,1);
+		box-shadow:0upx 3upx 6upx rgba(0,0,0,0.16);
+		border-radius:45upx;
+	}
+}
+
+.zzx-form-item {
+	width: calc(100% - 60upx);
+	margin: 0 auto;
+	display: flex;
+	height: 90upx;
+	line-height: 90upx;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	border-bottom: 1upx solid #DDDDDD;
+	&:last-child {
+		border: none;
+		margin: 30upx auto;
+	}
+	.zzx-form-label {
+		width: 150upx;
+	}
+	.zzx-form-label-required {
+		&:before {
+			display: inline;
+			content: '*';
+			color: #ff5500;
+		}
+	}
+	.zzx-form-arrow {
+		width: 18upx;
+		height: 36upx;
+	}
+}
+.zzx-form-value{
+	flex: 1;
+	.zzx-radio-label {
+		margin-right: 15upx;
+	}
+	.zzx-checkbox-label {
+		margin-right: 15upx;
+	}
+}
+.zzx-form-input {
+	height: 90upx;
+	line-height: 90upx;
+}
+.zzx-picker-null {
+	color: #dddddd;
+}
+

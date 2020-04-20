@@ -12,6 +12,12 @@
 				"navigationBarTitleText": "组件"
 			}
         }
+        ,{
+            "path" : "pages/component/form/form",
+            "style" : {
+				"navigationBarTitleText": "表单"
+			}
+        }
     ],
 	"tabBar": {
 		"color": "#707070",
