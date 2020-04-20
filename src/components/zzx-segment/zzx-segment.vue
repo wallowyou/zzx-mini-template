@@ -9,6 +9,9 @@
 </template>
 
 <script>
+	/* 自定义的分段器 
+	* 	TODO: 增加滑动功能，增加tag显示
+	*/
 	export default {
 		name: 'ZzxSegmentedControl',
 		props: {
@@ -89,6 +92,10 @@
 		}
 		.text-active {
 			font-size: 28upx;
+			position: relative;
+			text-align: center;
+			display: flex;
+			justify-content: center;
 		}
 		.segmented-line {
 			width: 100upx;
@@ -97,12 +104,13 @@
 		}
 		.text-active:after {
 			display: block;
-			width: 100upx;
+			width: 60upx;
 			height: 4upx;
 			content: '';
 			position: absolute;
 			bottom: 0;
-			left: calc(50% - 24upx);
+			margin: 0 auto;
+			// left: calc(100% - 60upx);
 			background: #2AB4FB;
 		}
 	}

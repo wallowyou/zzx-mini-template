@@ -18,6 +18,18 @@
 				"navigationBarTitleText": "表单"
 			}
         }
+        ,{
+            "path" : "pages/component/tabs/tabs",
+            "style" : {
+				"navigationBarTitleText": "选项卡"
+			}
+        }
+        ,{
+            "path" : "pages/component/calendar/calendar",
+            "style" : {
+				"navigationBarTitleText": "日历"
+			}
+        }
     ],
 	"tabBar": {
 		"color": "#707070",

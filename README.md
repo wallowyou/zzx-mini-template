@@ -37,6 +37,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 使用方法参考官方文档。[ucharts官方文档](http://doc.ucharts.cn/1073940)
 #### 4.2 上拉加载更多，下拉刷新组件 mescroll-uni
 项目中经常用到列表和tab搭配使用会用到上拉加载更多下拉刷新数据的功能。具体使用方法见官方文档: [mescroll-uni](http://www.mescroll.com/uni.html?v=20200315)
+#### 4.3 选项卡，分段器  uniSegmentedControl  zzxSegmentedControl
+tads组件我们可以用官方的uniSegmentedControl,或者自定义的zzxSegmentedControl，根据需要使用，组件页面有组件使用例子
+注意： 两者都暂时不支持滑动切换
 ### 5. 样式
 通用样式文件可以放在`scss`文件夹下面, 全局样式变量放在uni.scss可以自行在文件后面添加自己需要的全局样式,暂时有表单的通用样式，在组件中可以看到示例。
 ### 6. 项目mock数据

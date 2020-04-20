@@ -1,8 +1,11 @@
 <template>
 	<view class="content">
+		<view class="title">
+			zzx-mini-template
+		</view>
 		<view class="test">
 			<view class="test-item" v-for="item in testList" :key="item.id">
-				{{item.name}}
+				{{item.content}}
 			</view>
 		</view>
 	</view>
@@ -30,5 +33,8 @@
 </script>
 
 <style lang="scss">
-
+.title {
+	font-size: 28upx;
+	text-align: center;
+}
 </style>
