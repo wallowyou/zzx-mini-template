@@ -38,7 +38,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 #### 4.2 上拉加载更多，下拉刷新组件 mescroll-uni
 项目中经常用到列表和tab搭配使用会用到上拉加载更多下拉刷新数据的功能。具体使用方法见官方文档: [mescroll-uni](http://www.mescroll.com/uni.html?v=20200315)
 ### 5. 样式
-通用样式文件可以放在`scss`文件夹下面, 全局样式变量放在uni.scss可以自行在文件后面添加自己需要的全局样式
+通用样式文件可以放在`scss`文件夹下面, 全局样式变量放在uni.scss可以自行在文件后面添加自己需要的全局样式,暂时有表单的通用样式，在组件中可以看到示例。
 ### 6. 项目mock数据
 本模板项目的mock数据单独开node服务,使用koa，在`/mock/index.js`中已经有示范代码，可以很方便简单的添加其他的get,post请求
 eg: 
@@ -68,4 +68,3 @@ npm install -g nodemon
 npm run mock:dev
 ```
 保存mock中index.js代码之后就会自动重启mock服务。
-#707070 #1296db
