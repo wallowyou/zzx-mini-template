@@ -10,9 +10,6 @@
 			<view class="plat-item">
 				<navigator url="/pages/component/tabs/tabs">选项卡</navigator>
 			</view>
-			<view class="plat-item">
-				<navigator url="/pages/component/calendar/calendar">日历</navigator>
-			</view>
 			
 		</view>
 	</view>
