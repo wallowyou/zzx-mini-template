@@ -1,3 +1,7 @@
+/*
+* 此文件也可以当作是一个请求实例的全局配置，然后将实例化之后的http导出，就可以在其他文件导入http,将请求模块化，单例模式
+* 也可以同时存在多个实例
+*/
 import Request from './request';
 // 创建一个实例，实例配置
 const baseUrl = process.env.NODE_ENV === 'development' ?  'http://localhost:8090' : 'https://property.wallowyou.cn:5449/'
@@ -51,7 +55,7 @@ http.interceptor.response((response) => { /* 请求之后拦截器 */
 /*
 	以下为请求各个api请求方法,之后专门导出
 */
-// 登录
+// 测试
 const test = () => {
 	return http.get('/api/test')
 }
