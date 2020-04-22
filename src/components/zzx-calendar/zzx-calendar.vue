@@ -6,43 +6,44 @@
 			</view>
 		</view>
 		<view class="calendar-content">
-		   <swiper class="calendar-swiper" :indicator-dots="false" :autoplay="false" :duration="duration" :current="current" @change="changeSwp" :circular="true">
+		   <swiper class="calendar-swiper" :style="{
+			   width: '100%',
+			   height: sheight
+		   }" :indicator-dots="false" :autoplay="false" :duration="duration" :current="current" @change="changeSwp" :circular="true">
 				<swiper-item class="calendar-item">
 					<view class="calendar-days">
 					<view class="calendar-day" v-for="(item,index) in preWeek" :key="index">
 						{{item.time.getDate()}}
 					</view>
 					</view>
-					<view class="calendar-mode">
-						折叠
-					</view>
+					
 				</swiper-item>
 				<swiper-item class="calendar-item">
 					<view class="calendar-days">
-						<view class="calendar-day" v-for="(item,index) in days" :key="index">
+						<view class="calendar-day" v-for="(item,index) in days" :key="index" :class="!item.show ? 'day-hidden' : ''">
 							{{item.time.getDate()}}
 						</view>
 					</view>
-					<view class="calendar-mode">
-						折叠
-					</view>
+					
 				</swiper-item>
 				<swiper-item class="calendar-item">
 					<view class="calendar-days">
 						<view class="calendar-day" v-for="(item,index) in nextWeek" :key="index">
 							{{item.time.getDate()}}
 						</view>
-					</view>
-					<view class="calendar-mode" @click="changeMode">
-						折叠
-					</view>
+					</view>		
 				</swiper-item>
 			</swiper>
+			<view class="mode-change" @click="changeMode">
+				<view :class="weekMode ? 'mode-arrow-bottom' : 'mode-arrow-top'">	
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {gegerateDates} from './generateDates.js';
 	export default {
 		props: {
 			duration: { // 滑动动画时长
@@ -51,20 +52,30 @@
 			}
 		},
 		computed: {
-			preWeek() {
-				const d = this.days[0].time;
-				const y = d.getFullYear();
-				const m = d.getMonth();
-				const day = d.getDate();
-				const preWeek = [];
-				if (this.weekMode) {
-					for(let i = 7; i > 0; i--) {
-					const dtemp = new Date(y,m,day);
-					dtemp.setDate(dtemp.getDate() - i);
-						preWeek.push({
-							time: dtemp
-						});
+			sheight() {
+				// 根据年月判断有多少行
+				// 判断该月有多少天
+				let h = '60rpx';
+				if (!this.weekMode) {
+					const d = new Date(this.currentYear, this.currentMonth, 0);
+					const days = d.getDate();
+					let day = new Date(d.setDate(1)).getDay();
+					if (day === 0) {
+						day = 7;
 					}
+					const pre = 8 - day;
+					const rows = Math.ceil((35-pre) / 7);
+					h = 60 * rows + 'rpx'
+				}
+				return h
+			},
+			preWeek() {
+				if (this.weekMode) {
+					const d = new Date(this.currentYear, this.currentMonth - 1, this.currentDay);
+					d.setDate(d.getDate() - 7);
+					preWeek = gegerateDates(d, 'week');
+				} else {
+					// 上一个月
 				}
 				return preWeek;
 			},
@@ -115,32 +126,13 @@
 				this.currentMonth = date.getMonth() + 1    // 当前月份
 				this.currentWeek = date.getDay() === 0 ? 7 : date.getDay() // 1...6,0   // 星期几
 				this.days = [];
-				// 当前日期前的日期
-				for (let i = this.currentWeek - 1; i >= 0;i--) {
-					const d = new Date(this.currentYear,this.currentMonth - 1,this.currentDay);
-					d.setDate(d.getDate() - i);
-					this.days.push({
-						time: d
-					});
-				}
-				// 当前日期后的日期
+				let days = [];
 				if (this.weekMode) {
-					for (let i = 1;i <= (7-this.currentWeek);i++) {
-						const d = new Date(this.currentYear,this.currentMonth - 1,this.currentDay);
-						d.setDate(d.getDate() + i);
-						this.days.push({
-							time: d,
-						})
-					}
+					days = gegerateDates(date, 'week');
 				} else {
-					for (let i = 1;i <= (35-this.currentWeek);i++) {
-						const d = new Date(this.currentYear,this.currentMonth - 1,this.currentDay);
-						d.setDate(d.getDate() + i);
-						this.days.push({
-							time: d,
-						})
-					}
+					days = gegerateDates(date, 'month');
 				}
+				this.days = days;
 			},
 			//  上个星期
 			weekPre () {
@@ -186,6 +178,10 @@
 			text-align: center;
 		}
 	}
+	swiper {
+		width: 100%;
+		height: 60upx;
+	}
 	.calendar-content {
 		min-height: 60upx;
 	}
@@ -195,14 +191,39 @@
 	.calendar-item {
 		margin: 0;
 		padding: 0;
+		height: 100%;
 	}
 	.calendar-days {
 		display: flex;
-		felx-flow: row wrap;
+		flex-flow: row wrap;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
 		.calendar-day {
 			width: calc(100% / 7);
 			height: 60upx;
 			text-align: center;
+		}
+	}
+	.day-hidden {
+		visibility: hidden;
+	}
+	.mode-change {
+		display: flex;
+		justify-content: center;
+		.mode-arrow-top {
+			width: 0;
+			height:0;
+			border-left: 10upx solid transparent;
+		    border-right: 10upx solid transparent;
+		    border-bottom: 20upx solid red;
+		}
+		.mode-arrow-bottom {
+			width: 0;
+			height:0;
+			border-left: 10upx solid transparent;
+			border-right: 10upx solid transparent;
+			border-top: 20upx solid red;
 		}
 	}
 }

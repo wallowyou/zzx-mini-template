@@ -96,16 +96,17 @@
 			text-align: center;
 			display: flex;
 			justify-content: center;
+			padding-bottom: 15upx;
 		}
 		.segmented-line {
 			width: 100upx;
-			height: 4upx;
+			height: 6upx;
 			background: red;
 		}
 		.text-active:after {
 			display: block;
 			width: 60upx;
-			height: 4upx;
+			height: 6upx;
 			content: '';
 			position: absolute;
 			bottom: 0;

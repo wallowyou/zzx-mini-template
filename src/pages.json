@@ -24,6 +24,16 @@
 				"navigationBarTitleText": "选项卡"
 			}
         }
+        ,{
+            "path" : "pages/component/calendar/calendar",
+            "style" : {
+				"navigationBarTitleText": "日历"
+			}
+        }
+        ,{
+            "path" : "pages/vediotest/vediotest",
+            "style" : {}
+        }
     ],
 	"tabBar": {
 		"color": "#707070",
