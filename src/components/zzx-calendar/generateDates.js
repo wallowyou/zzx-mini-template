@@ -17,6 +17,10 @@ export const gegerateDates = (date = new Date(), type='week') => {
 		const days = new Date(y, m+1, 0).getDate();
 		// 获取日期是星期几
 		let weekIndex = date.getDay() === 0 ? 7 : date.getDay();
+		if (type === 'month') {
+			const dobj = new Date(y,m,1);
+			weekIndex = dobj.getDay() === 0 ? 7 : dobj.getDay();
+		}
 		if (type === 'week') {
 			for(let i = weekIndex - 1; i >0; i--) {
 				const dtemp = new Date(y,m,d);

@@ -1,5 +1,8 @@
 <template>
 	<view class="zzx-calendar">
+		<view class="calendar-heander">
+			{{timeStr}}
+		</view>
 		<view class="calendar-weeks">
 			<view class="calendar-week" v-for="(week, index) in weeks" :key="index">
 				{{week}}
@@ -12,7 +15,7 @@
 		   }" :indicator-dots="false" :autoplay="false" :duration="duration" :current="current" @change="changeSwp" :circular="true">
 				<swiper-item class="calendar-item">
 					<view class="calendar-days">
-					<view class="calendar-day" v-for="(item,index) in preWeek" :key="index">
+					<view class="calendar-day" v-for="(item,index) in preWeek" :key="index" :class="!item.show ? 'day-hidden' : ''">
 						{{item.time.getDate()}}
 					</view>
 					</view>
@@ -20,7 +23,7 @@
 				</swiper-item>
 				<swiper-item class="calendar-item">
 					<view class="calendar-days">
-						<view class="calendar-day" v-for="(item,index) in days" :key="index" :class="!item.show ? 'day-hidden' : ''">
+						<view class="calendar-day" v-for="(item,index) in days" :key="index" :class="!item.show ? 'day-hidden' : ''" @click="clickItem(item.time)">
 							{{item.time.getDate()}}
 						</view>
 					</view>
@@ -28,7 +31,7 @@
 				</swiper-item>
 				<swiper-item class="calendar-item">
 					<view class="calendar-days">
-						<view class="calendar-day" v-for="(item,index) in nextWeek" :key="index">
+						<view class="calendar-day" v-for="(item,index) in nextWeek" :key="index" :class="!item.show ? 'day-hidden' : ''">
 							{{item.time.getDate()}}
 						</view>
 					</view>		
@@ -70,31 +73,39 @@
 				return h
 			},
 			preWeek() {
+				let result = [];
 				if (this.weekMode) {
 					const d = new Date(this.currentYear, this.currentMonth - 1, this.currentDay);
 					d.setDate(d.getDate() - 7);
-					preWeek = gegerateDates(d, 'week');
+					result = gegerateDates(d, 'week');
 				} else {
 					// 上一个月
+					const d = new Date(this.currentYear, this.currentMonth - 2, 1);
+					console.log(d)
+					result = gegerateDates(d, 'month');
 				}
-				return preWeek;
+				return result;
 			},
 			nextWeek() {
-				const d = this.days[6].time;
-				const y = d.getFullYear();
-				const m = d.getMonth();
-				const day = d.getDate();
-				const nextWeek = [];
+				let result = [];
 				if (this.weekMode) {
-					for(let i = 1; i <= 7 ; i++) {
-					const dtemp = new Date(y,m,day);
-					dtemp.setDate(dtemp.getDate() + i);
-						nextWeek.push({
-							time: dtemp
-						});
-					}
+					const d = new Date(this.currentYear, this.currentMonth - 1, this.currentDay);
+					d.setDate(d.getDate() + 7);
+					result = gegerateDates(d, 'week');
+				} else {
+					// 上一个月
+					const d = new Date(this.currentYear, this.currentMonth, 1);
+					result = gegerateDates(d, 'month');
 				}
-				return nextWeek;
+				return result;
+			},
+			timeStr() {
+				let str = '';
+			    const d = new Date(this.currentYear, this.currentMonth - 1, this.currentdDay);
+				const y = d.getFullYear();
+				const m = (d.getMonth()+1) <=9 ? `0${d.getMonth()+1}` : d.getMonth()+1;
+				str = `${y}年${m}月`;
+				return str;
 			}
 		},
 		data() {
@@ -111,7 +122,21 @@
 		},
 		methods: {
 			changeSwp(e) {
-				console.log(e);
+				// console.log(e);
+				const pre = this.current;
+				const current = e.target.current;
+				/* 根据前一个减去目前的值我们可以判断是下一个月/周还是上一个月/周 
+				*current - pre === 1, -2时是下一个月/周
+				*current -pre === -1, 2时是上一个月或者上一周
+				*/
+				this.current = current;
+				if (current - pre === 1 || current - pre === -2) {
+					// 如果是周
+					// 如果是月
+				} else {
+					// 如果是周
+					// 如果是月
+				}
 			},
 			// 初始化日历的方法
 			initDate(cur) {
@@ -149,6 +174,10 @@
 			changeMode() {
 				this.weekMode = !this.weekMode;
 				this.initDate()
+			},
+			// 点击日期
+			clickItem(e) {
+				console.log(e);
 			}
 		},
 		created() {
@@ -164,6 +193,9 @@
 .zzx-calendar {
 	width: 100%;
 	height: auto;
+	.calendar-heander {
+		text-align: center;
+	}
 	.calendar-weeks {
 		width: 100%;
 		display: flex;
