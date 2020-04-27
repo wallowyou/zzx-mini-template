@@ -18,7 +18,7 @@
 			</view>
 			<zzx-segmented-control :current="current" :values="items" @clickItem="onClickItem"></zzx-segmented-control>
 		</view>
-		<view class="content">
+		<view>
 			<view v-show="current === 0">
 				选项卡1的内容
 			</view>
@@ -29,16 +29,20 @@
 				选项卡3的内容
 			</view>
 		</view>
+		<view class="">
+			 
+		</view>
 	</view>
 </template>
 
 <script>
 	import uniSegmentedControl from "@/components/uni-segmented-control/uni-segmented-control.vue"
 	import zzxSegmentedControl from "@/components/zzx-segment/zzx-segment.vue"
+	
 	export default {
 		components: {
 			uniSegmentedControl,
-			zzxSegmentedControl
+			zzxSegmentedControl	
 		},
 		data() {
 			return {

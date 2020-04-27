@@ -1,7 +1,10 @@
 <template>
 	<view class="zzx-calendar">
 		<view class="calendar-heander">
-			{{timeStr}}
+				{{timeStr}}
+			<view class="back-today" @click="goback" v-if="showBack">
+				返回今日
+			</view>
 		</view>
 		<view class="calendar-weeks">
 			<view class="calendar-week" v-for="(week, index) in weeks" :key="index">
@@ -13,29 +16,28 @@
 			   width: '100%',
 			   height: sheight
 		   }" :indicator-dots="false" :autoplay="false" :duration="duration" :current="current" @change="changeSwp" :circular="true">
-				<swiper-item class="calendar-item">
+				<swiper-item class="calendar-item" v-for="sitem in swiper" :key="sitem">
 					<view class="calendar-days">
-					<view class="calendar-day" v-for="(item,index) in preWeek" :key="index" :class="!item.show ? 'day-hidden' : ''">
-						{{item.time.getDate()}}
-					</view>
-					</view>
-					
-				</swiper-item>
-				<swiper-item class="calendar-item">
-					<view class="calendar-days">
-						<view class="calendar-day" v-for="(item,index) in days" :key="index" :class="!item.show ? 'day-hidden' : ''" @click="clickItem(item.time)">
+						<template v-if="sitem === current">
+							<view class="calendar-day" v-for="(item,index) in days" :key="index"
+							:class="{
+								'day-hidden': !item.show
+							}" @click="clickItem(item)">
+							<view
+								class="date"
+								:class="{
+									'is-today' : item.isToday,
+									'is-checked': item.checked
+								}"
+							>
 							{{item.time.getDate()}}
-						</view>
-					</view>
-					
-				</swiper-item>
-				<swiper-item class="calendar-item">
-					<view class="calendar-days">
-						<view class="calendar-day" v-for="(item,index) in nextWeek" :key="index" :class="!item.show ? 'day-hidden' : ''">
-							{{item.time.getDate()}}
-						</view>
-					</view>		
-				</swiper-item>
+							</view>
+							<view class="dot-show" v-if="item.info">		
+							</view>
+							</view>
+						</template>		
+					</view>				
+				</swiper-item>			
 			</swiper>
 			<view class="mode-change" @click="changeMode">
 				<view :class="weekMode ? 'mode-arrow-bottom' : 'mode-arrow-top'">	
@@ -46,62 +48,46 @@
 </template>
 
 <script>
-	import {gegerateDates} from './generateDates.js';
+	import {gegerateDates, dateEqual} from './generateDates.js';
 	export default {
 		props: {
-			duration: { // 滑动动画时长
-				type: Number, 
-				default: 500
+			dotList: {
+				type: Array, /// 打点日期列表
+				default() {
+					return [
+						{
+							date: '2020-04-28',
+							msg: '描述'
+						}
+					]
+				}
+			},
+			showBack: {
+				type: Boolean, // 是否返回今日
+				default: false
 			}
 		},
 		computed: {
 			sheight() {
 				// 根据年月判断有多少行
 				// 判断该月有多少天
-				let h = '60rpx';
+				let h = '70rpx';
 				if (!this.weekMode) {
 					const d = new Date(this.currentYear, this.currentMonth, 0);
-					const days = d.getDate();
+					const days = d.getDate(); // 判断本月有多少天
 					let day = new Date(d.setDate(1)).getDay();
 					if (day === 0) {
 						day = 7;
 					}
 					const pre = 8 - day;
-					const rows = Math.ceil((35-pre) / 7);
-					h = 60 * rows + 'rpx'
+					const rows = Math.ceil((days-pre) / 7) + 1;
+					h = 70 * rows + 'rpx'
 				}
 				return h
 			},
-			preWeek() {
-				let result = [];
-				if (this.weekMode) {
-					const d = new Date(this.currentYear, this.currentMonth - 1, this.currentDay);
-					d.setDate(d.getDate() - 7);
-					result = gegerateDates(d, 'week');
-				} else {
-					// 上一个月
-					const d = new Date(this.currentYear, this.currentMonth - 2, 1);
-					console.log(d)
-					result = gegerateDates(d, 'month');
-				}
-				return result;
-			},
-			nextWeek() {
-				let result = [];
-				if (this.weekMode) {
-					const d = new Date(this.currentYear, this.currentMonth - 1, this.currentDay);
-					d.setDate(d.getDate() + 7);
-					result = gegerateDates(d, 'week');
-				} else {
-					// 上一个月
-					const d = new Date(this.currentYear, this.currentMonth, 1);
-					result = gegerateDates(d, 'month');
-				}
-				return result;
-			},
 			timeStr() {
 				let str = '';
-			    const d = new Date(this.currentYear, this.currentMonth - 1, this.currentdDay);
+			    const d = new Date(this.currentYear, this.currentMonth - 1, this.currentDate);
 				const y = d.getFullYear();
 				const m = (d.getMonth()+1) <=9 ? `0${d.getMonth()+1}` : d.getMonth()+1;
 				str = `${y}年${m}月`;
@@ -112,12 +98,14 @@
 			return {
 				weeks: ['一', '二', '三', '四', '五', '六', '日'],
 				current: 1,
-				currentYear: 2020,
-				currentMonth: 1,
-				currentdDay: 1,
-				currentWeek: 1,
+				currentYear: '',
+				currentMonth: '',
+				currentDate: '',
 				days: [],
-				weekMode: true
+				weekMode: true,
+				swiper: [0,1,2],
+				// dotList: [], // 打点的日期列表
+				selectedDate: ''
 			};
 		},
 		methods: {
@@ -131,11 +119,9 @@
 				*/
 				this.current = current;
 				if (current - pre === 1 || current - pre === -2) {
-					// 如果是周
-					// 如果是月
+					this.daysNext();
 				} else {
-					// 如果是周
-					// 如果是月
+					this.daysPre();
 				}
 			},
 			// 初始化日历的方法
@@ -146,7 +132,7 @@
 				} else {
 					date = new Date()
 				}
-				this.currentDay = date.getDate()          // 今日日期 几号
+				this.currentDate = date.getDate()          // 今日日期 几号
 				this.currentYear = date.getFullYear()       // 当前年份
 				this.currentMonth = date.getMonth() + 1    // 当前月份
 				this.currentWeek = date.getDay() === 0 ? 7 : date.getDay() // 1...6,0   // 星期几
@@ -157,34 +143,59 @@
 				} else {
 					days = gegerateDates(date, 'month');
 				}
+				days.forEach(day => {
+					const dot = this.dotList.find(item => {
+						return dateEqual(item.date, day.fullDate);
+					})
+					if (dot) {
+						day.info = dot;
+					}
+				})
 				this.days = days;
 			},
-			//  上个星期
-			weekPre () {
-			  const d = this.days[0].time;    // 如果当期日期是7号或者小于7号
-			  d.setDate(d.getDate() - 1);
-			  this.initData(d);
+			//  上一个
+			daysPre () {
+			  if (this.weekMode) {
+				const d = new Date(this.currentYear, this.currentMonth - 1,this.currentDate);
+				d.setDate(d.getDate() - 7);
+				this.initDate(d);  
+			  } else {
+				  const d = new Date(this.currentYear, this.currentMonth -2, 1);
+				  this.initDate(d);
+			  }
 			},
-			//  下个星期
-			weekNext () {
-			  const d = this.days[6].time;    // 如果当期日期是7号或者小于7号
-			  d.setDate(d.getDate() + 7);
-			  this.initData(d);
+			//  下一个
+			daysNext () {
+				 if (this.weekMode) {
+					const d = new Date(this.currentYear, this.currentMonth - 1,this.currentDate);
+					d.setDate(d.getDate() + 7);
+					this.initDate(d);  
+				 } else {
+					const d = new Date(this.currentYear, this.currentMonth, 1);
+					this.initDate(d);
+				 }
 			},
 			changeMode() {
 				this.weekMode = !this.weekMode;
-				this.initDate()
+				let d = new Date(this.currentYear, this.currentMonth - 1, this.currentDate)
+				if (this.selectedDate) {
+					d = new Date(this.selectedDate.replace('-', '/').replace('-', '/'))
+				}
+				this.initDate(d)
 			},
 			// 点击日期
 			clickItem(e) {
-				console.log(e);
+				this.selectedDate = e.fullDate;
+			},
+			goback() {
+				const d = new Date();
+				this.initDate(d);
 			}
 		},
 		created() {
 			this.initDate();
 		},
 		mounted() {
-			console.log(this.preWeek)
 		}
 	}
 </script>
@@ -195,6 +206,21 @@
 	height: auto;
 	.calendar-heander {
 		text-align: center;
+		height: 60upx;
+		line-height: 60upx;
+		position: relative;
+		.back-today {
+			position: absolute;
+			right: 0;
+			width: 80upx;
+			height: 30upx;
+			line-height: 30upx;
+			font-size: 20upx;
+			top: 15upx;
+			border-radius: 15upx 0 0 15upx;
+			color: #ffffff;
+			background-color: #FF6633;
+		}
 	}
 	.calendar-weeks {
 		width: 100%;
@@ -218,7 +244,8 @@
 		min-height: 60upx;
 	}
 	.calendar-swiper {       
-		min-height: 60upx;
+		min-height: 70upx;
+		transition: height ease-out 0.3s;
 	}
 	.calendar-item {
 		margin: 0;
@@ -233,8 +260,12 @@
 		overflow: hidden;
 		.calendar-day {
 			width: calc(100% / 7);
-			height: 60upx;
+			height: 70upx;
 			text-align: center;
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: flex-start;
+			align-items: center;
 		}
 	}
 	.day-hidden {
@@ -243,20 +274,43 @@
 	.mode-change {
 		display: flex;
 		justify-content: center;
+		margin-top:10upx;
 		.mode-arrow-top {
 			width: 0;
 			height:0;
-			border-left: 10upx solid transparent;
-		    border-right: 10upx solid transparent;
-		    border-bottom: 20upx solid red;
+			border-left: 12upx solid transparent;
+		    border-right: 12upx solid transparent;
+		    border-bottom: 10upx solid #FF6633;
 		}
 		.mode-arrow-bottom {
 			width: 0;
 			height:0;
-			border-left: 10upx solid transparent;
-			border-right: 10upx solid transparent;
-			border-top: 20upx solid red;
+			border-left: 12upx solid transparent;
+			border-right: 12upx solid transparent;
+			border-top: 10upx solid #FF6633;
 		}
+	}
+	.is-today {
+		background: #FF6633;
+		color: #ffffff;
+	}
+	.is-checked {
+		background: #000000;
+		color: #ffffff;
+	}
+	.date {
+		width: 50upx;
+		height: 50upx;
+		line-height: 50upx;
+		margin: 0 auto;
+		border-radius: 50upx;
+	}
+	.dot-show {
+		margin-top:4upx;
+		width: 10upx;
+		height: 10upx;
+		background: #c6c6c6;
+		border-radius: 10upx;
 	}
 }
 </style>
