@@ -59,10 +59,6 @@
 				type: Array, /// 打点日期列表
 				default() {
 					return [
-						{
-							date: '2020-04-28',
-							msg: '描述'
-						}
 					]
 				}
 			},
@@ -85,6 +81,11 @@
 						background: '#c6c6c6'
 					}
 				}
+			}
+		},
+		watch:{
+			dotList: function(newvalue){
+				this.initDate(new Date(this.currentYear, this.currentMonth-1, this.currentDate));
 			}
 		},
 		computed: {
@@ -168,6 +169,11 @@
 					// this.selectedDate = days[0].fullDate;
 				} else {
 					days = gegerateDates(date, 'month');
+					// const sel = new Date(this.selectedDate.replace('-', '/').replace('-', '/'));
+					// const isMonth = sel.getFullYear() === this.currentYear && (sel.getMonth() + 1) === this.currentMonth;
+					// if(!isMonth) {
+					// 	this.selectedDate = formatDate(new Date(this.currentYear, this.currentMonth-1,1), 'yyyy-MM-dd')
+					// }
 				}
 				days.forEach(day => {
 					const dot = this.dotList.find(item => {
@@ -202,11 +208,16 @@
 				 }
 			},
 			changeMode() {
+				const premode = this.weekMode;
+				let isweek = false;
+				if (premode) {
+					isweek = !!this.days.find(item => item.fullDate === this.selectedDate)
+				}	
 				this.weekMode = !this.weekMode;
 				let d = new Date(this.currentYear, this.currentMonth - 1, this.currentDate)
 				const sel = new Date(this.selectedDate.replace('-', '/').replace('-', '/'));
-				const isMonth = sel.getFullYear() === this.currentYear && (sel.getMonth() + 1) === this.currentMonth
-				if (this.selectedDate && isMonth) {
+				const isMonth = sel.getFullYear() === this.currentYear && (sel.getMonth() + 1) === this.currentMonth;
+				if ((this.selectedDate && isMonth) || premode) {
 					d = new Date(this.selectedDate.replace('-', '/').replace('-', '/'))
 				}
 				this.initDate(d)
@@ -242,7 +253,7 @@
 		.back-today {
 			position: absolute;
 			right: 0;
-			width: 80upx;
+			width: 100upx;
 			height: 30upx;
 			line-height: 30upx;
 			font-size: 20upx;
