@@ -25,14 +25,14 @@
 							}" @click="clickItem(item)">
 							<view
 								class="date"
-								:class="{
-									'is-today' : item.isToday,
-									'is-checked': item.checked
-								}"
+								:class="[
+									item.isToday ? todayClass : '',
+									item.fullDate === selectedDate ? checkedClass : ''
+									]"
 							>
 							{{item.time.getDate()}}
 							</view>
-							<view class="dot-show" v-if="item.info">		
+							<view class="dot-show" v-if="item.info" :style="dotStyle">		
 							</view>
 							</view>
 						</template>		
@@ -48,9 +48,13 @@
 </template>
 
 <script>
-	import {gegerateDates, dateEqual} from './generateDates.js';
+	import {gegerateDates, dateEqual,formatDate} from './generateDates.js';
 	export default {
 		props: {
+			duration: {
+				type: Number,
+				default: 500
+			},
 			dotList: {
 				type: Array, /// 打点日期列表
 				default() {
@@ -65,6 +69,22 @@
 			showBack: {
 				type: Boolean, // 是否返回今日
 				default: false
+			},
+			todayClass: {
+				type: String, // 今日的自定义样式class
+				default: 'is-today'
+			},
+			checkedClass: {
+				type: String, // 选中日期的样式class
+				default: 'is-checked'
+			},
+			dotStyle: {
+				type: Object, // 打点日期的自定义样式
+				default() {
+					return {
+						background: '#c6c6c6'
+					}
+				}
 			}
 		},
 		computed: {
@@ -105,7 +125,7 @@
 				weekMode: true,
 				swiper: [0,1,2],
 				// dotList: [], // 打点的日期列表
-				selectedDate: ''
+				selectedDate: formatDate(new Date(), 'yyyy-MM-dd')
 			};
 		},
 		methods: {
@@ -136,10 +156,16 @@
 				this.currentYear = date.getFullYear()       // 当前年份
 				this.currentMonth = date.getMonth() + 1    // 当前月份
 				this.currentWeek = date.getDay() === 0 ? 7 : date.getDay() // 1...6,0   // 星期几
+				const nowY = new Date().getFullYear()       // 当前年份
+				const nowM = new Date().getMonth() + 1
+				const nowD = new Date().getDate()          // 今日日期 几号
+				const nowW = new Date().getDay();
+				// this.selectedDate = formatDate(new Date(), 'yyyy-MM-dd')
 				this.days = [];
 				let days = [];
 				if (this.weekMode) {
 					days = gegerateDates(date, 'week');
+					// this.selectedDate = days[0].fullDate;
 				} else {
 					days = gegerateDates(date, 'month');
 				}
@@ -178,7 +204,9 @@
 			changeMode() {
 				this.weekMode = !this.weekMode;
 				let d = new Date(this.currentYear, this.currentMonth - 1, this.currentDate)
-				if (this.selectedDate) {
+				const sel = new Date(this.selectedDate.replace('-', '/').replace('-', '/'));
+				const isMonth = sel.getFullYear() === this.currentYear && (sel.getMonth() + 1) === this.currentMonth
+				if (this.selectedDate && isMonth) {
 					d = new Date(this.selectedDate.replace('-', '/').replace('-', '/'))
 				}
 				this.initDate(d)
@@ -186,6 +214,7 @@
 			// 点击日期
 			clickItem(e) {
 				this.selectedDate = e.fullDate;
+				this.$emit('selected-change', e);
 			},
 			goback() {
 				const d = new Date();
@@ -209,6 +238,7 @@
 		height: 60upx;
 		line-height: 60upx;
 		position: relative;
+		font-size: 30upx;
 		.back-today {
 			position: absolute;
 			right: 0;
@@ -230,6 +260,7 @@
 		line-height: 60upx;
 		justify-content: center;
 		align-items: center;
+		font-size: 30upx;
 		.calendar-week {
 			width: calc(100% / 7);
 			height: 100%;
@@ -258,6 +289,7 @@
 		width: 100%;
 		height: 100%;
 		overflow: hidden;
+		font-size: 28upx;
 		.calendar-day {
 			width: calc(100% / 7);
 			height: 70upx;
@@ -291,11 +323,13 @@
 		}
 	}
 	.is-today {
-		background: #FF6633;
-		color: #ffffff;
+		background: #ffffff;
+		// border: 1upx solid #FF6633;
+		border-radius: 50%;
+		color: #FF6633;
 	}
 	.is-checked {
-		background: #000000;
+		background: #FF6633;
 		color: #ffffff;
 	}
 	.date {
