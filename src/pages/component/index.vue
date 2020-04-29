@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view class="conponent-list">
+		<view class="component-list">
 			<view class="plat-item">
 				<navigator url="/pages/platform/smart-elevator/smart-elevator">智慧电梯</navigator>
 			</view>
@@ -31,7 +31,7 @@
 </script>
 
 <style lang="scss">
-	.conponent-list {
+	.component-list {
 		display: flex;
 		flex-flow: column nowrap;
 	}

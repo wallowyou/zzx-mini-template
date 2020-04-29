@@ -1,24 +1,10 @@
 <template>
 	<view class="content">
-		<view>
-			<view class="">
-				按钮样式
-			</view>
-			<uni-segmented-control :current="current" :values="items" @clickItem="onClickItem" style-type="button" active-color="#4cd964"></uni-segmented-control>
-		</view>
-		<view>
-			<view class="">
-				文字样式
-			</view>
-			<uni-segmented-control :current="current" :values="items" @clickItem="onClickItem" style-type="text" active-color="#4cd964"></uni-segmented-control>
-		</view>
-		<view>
-			<view class="">
-				自定义tab
-			</view>
-			<zzx-segmented-control :current="current" :values="items" @clickItem="onClickItem"></zzx-segmented-control>
-		</view>
-		<view>
+		<view style="margin-top: 20upx;">
+			 <zzx-tabs :items="items" :current="current" @clickItem="onClickItem" ref="mytabs">
+			 </zzx-tabs>
+		</view>	
+		<view style="margin-top: 20upx;color:#999999;font-size: 24upx;height: 260upx;">
 			<view v-show="current === 0">
 				选项卡1的内容
 			</view>
@@ -30,19 +16,17 @@
 			</view>
 		</view>
 		<view class="">
-			 
-		</view>
+			<button type="primary" @click="setMydot">设置dot</button>
+			 <button type="default" @click="removeMydot">移除dot</button>
+		</view>	
 	</view>
 </template>
 
 <script>
-	import uniSegmentedControl from "@/components/uni-segmented-control/uni-segmented-control.vue"
-	import zzxSegmentedControl from "@/components/zzx-segment/zzx-segment.vue"
-	
+	import zzxTabs from "@/components/zzx-tabs/zzx-tabs.vue"
 	export default {
 		components: {
-			uniSegmentedControl,
-			zzxSegmentedControl	
+			zzxTabs
 		},
 		data() {
 			return {
@@ -55,6 +39,12 @@
 			if (this.current !== e.currentIndex) {
 				this.current = e.currentIndex;
 			}
+		  },
+		  setMydot() {
+			  this.$refs.mytabs.setDot(0)
+		  }, 
+		  removeMydot() {
+			  this.$refs.mytabs.removeDot(0);
 		  }
 		}
 	}

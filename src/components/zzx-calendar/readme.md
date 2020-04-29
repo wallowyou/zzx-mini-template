@@ -57,3 +57,8 @@ dotStyle|Object|{background: '#c6c6c6'}|打点日期的样式style
 	isToday: false // 是否是今天
 }
 ```
+## TODO
+- [ ] 滑动的时候上一个月/周以及下一个月/周空白问题解决  
+
+## 联系
+有问题可以在以下评论区评论，或者邮件wallowyou@outlook.com
