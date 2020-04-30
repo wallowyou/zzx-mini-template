@@ -4,7 +4,8 @@
 组件样式使用了sass所有需要项目中先安装node-sass和sass-loader。
 ## 组件调用方式
 在你需要使用的页面或者组件引入zzx-tabs，以下是完整功能的示例代码
-eg：
+eg：  
+template
 ```
 <template>
 	<view class="content">
@@ -29,8 +30,9 @@ eg：
 		</view>	
 	</view>
 </template>
-
-<script>
+```
+script
+```
 	import zzxTabs from "@/components/zzx-tabs/zzx-tabs.vue"
 	export default {
 		components: {
@@ -56,12 +58,6 @@ eg：
 		  }
 		}
 	}
-</script>
-
-<style lang="scss">
-
-</style>
-
 ```
 ## 组件属性说明 props
 组件提供很多自定义属性，默认颜色， 选中颜色，底部线的高度，线与文字的距离等具体属性看下表：

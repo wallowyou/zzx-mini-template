@@ -3,15 +3,20 @@
 日历组件，组件名：zzx-calendar，代码块： zzxCalendar。
 ## 组件调用方式
 在你需要使用的页面或者组件引入zzx-calendar
-eg：
+eg：  
+
+template
 ```
 <template>
 	<view class="content">
 		<zzx-calendar @selected-change="datechange"></zzx-calendar>
 	</view>
 </template>
-<script>
-	import zzxCalendar from "@/components/zzx-calendar/zzx-calendar.vue"
+
+```
+script
+```
+import zzxCalendar from "@/components/zzx-calendar/zzx-calendar.vue"
 	export default {
 		components: {
 			zzxCalendar
@@ -26,10 +31,8 @@ eg：
 			}
 		}
 	}
-</script>
-<style lang="scss">
-</style>
 ```
+
 ## 组件属性说明 props
 组件提供很多自定义属性，比如是否显示返回今日的功能，今天日期,打点日期，选中日期的样式自定义，具体属性看下表：
 
@@ -45,7 +48,7 @@ dotStyle|Object|{background: '#c6c6c6'}|打点日期的样式style
 ## 事件说明
 事件名|说明
 -|-
-@selected-change ｜ 选中日期改变时触发
+@selected-change | 选中日期改变时触发
 
 更多事件可以在源代码添加，后续更新再添加
 @selected-change 事件返回属性说明
