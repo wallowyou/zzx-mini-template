@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view style="margin-top: 20upx;">
-			 <zzx-tabs :items="items" :current="current" @clickItem="onClickItem" ref="mytabs">
+			 <zzx-tabs :items="items" :current="current" @clickItem="onClickItem" ref="mytabs" active-color="#ff0000">
 			 </zzx-tabs>
 		</view>	
 		<view style="margin-top: 20upx;color:#999999;font-size: 24upx;height: 260upx;">

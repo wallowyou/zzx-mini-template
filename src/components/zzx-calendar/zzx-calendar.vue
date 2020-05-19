@@ -118,7 +118,14 @@
 		},
 		watch:{
 			dotList: function(newvalue){
-				this.initDate(new Date(this.currentYear, this.currentMonth-1, this.currentDate));
+				const days = this.days.slice(0);
+				newvalue.forEach(item => {
+					const index = days.findIndex(ditem => ditem.fullDate === item.date);
+					if (index > 0) {
+						days[index].info = item
+					}
+				});
+				this.days = days;
 			}
 		},
 		computed: {
@@ -269,12 +276,12 @@
 				let isweek = false;
 				if (premode) {
 					isweek = !!this.days.find(item => item.fullDate === this.selectedDate)
-				}	
+				}
 				this.weekMode = !this.weekMode;
 				let d = new Date(this.currentYear, this.currentMonth - 1, this.currentDate)
 				const sel = new Date(this.selectedDate.replace('-', '/').replace('-', '/'));
 				const isMonth = sel.getFullYear() === this.currentYear && (sel.getMonth() + 1) === this.currentMonth;
-				if ((this.selectedDate && isMonth) || premode) {
+				if ((this.selectedDate && isMonth) || isweek) {
 					d = new Date(this.selectedDate.replace('-', '/').replace('-', '/'))
 				}
 				this.initDate(d)

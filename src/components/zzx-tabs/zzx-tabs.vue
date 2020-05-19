@@ -20,7 +20,8 @@
 			<view class="zzx-bottom-line"
 			:style="{
 				height: lineHeight,
-				width: lineWidth
+				width: lineWidth,
+				background: activeColor
 			}"
 			>			
 			</view>
