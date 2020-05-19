@@ -8,7 +8,7 @@
 	export default {
 		data() {
 			return {
-				url: 'http://193.112.66.91:9000/'
+				url: 'http://193.112.66.91:9001/'
 			}
 		},
 		onLoad(options) {

@@ -3,36 +3,32 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": " 主页"
+				"navigationBarTitleText": "主页"
 			}
 		}
-	    ,{
-            "path" : "pages/component/index",
+		,{
+		    "path" : "pages/about/about",
+		    "style" : {
+				"navigationBarTitleText": "关于我们"
+			}
+		}
+		,{
+		    "path" : "pages/platform/smart-elevator/smart-elevator",
+		    "style" : {
+				"navigationBarTitleText": "智慧电梯"
+			}
+		}
+        ,{
+            "path" : "pages/platform/walle-property/walle-property",
             "style" : {
-				"navigationBarTitleText": "组件"
+				"navigationBarTitleText": "瓦力物业"
 			}
         }
         ,{
-            "path" : "pages/component/form/form",
+            "path" : "pages/platform/fk-reserve/fk-reserve",
             "style" : {
-				"navigationBarTitleText": "表单"
+				"navigationBarTitleText": "访客预约"
 			}
-        }
-        ,{
-            "path" : "pages/component/tabs/tabs",
-            "style" : {
-				"navigationBarTitleText": "选项卡"
-			}
-        }
-        ,{
-            "path" : "pages/component/calendar/calendar",
-            "style" : {
-				"navigationBarTitleText": "日历"
-			}
-        }
-        ,{
-            "path" : "pages/vediotest/vediotest",
-            "style" : {}
         }
     ],
 	"tabBar": {
@@ -50,10 +46,10 @@
 			"text": "首页"
 		},
 		{
-			"pagePath": "pages/component/index",
+			"pagePath": "pages/about/about",
 			"iconPath": "static/img/component.png",
 			"selectedIconPath": "static/img/component-selected.png",
-			"text": "组件"
+			"text": "关于"
 		}]
 	},
 	"globalStyle": {
