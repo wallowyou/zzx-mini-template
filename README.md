@@ -41,7 +41,22 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 tads组件我们可以用官方的uniSegmentedControl,或者自定义的zzxSegmentedControl，根据需要使用，组件页面有组件使用例子
 注意： 两者都暂时不支持滑动切换
 ### 5. 样式
-通用样式文件可以放在`scss`文件夹下面, 全局样式变量放在uni.scss可以自行在文件后面添加自己需要的全局样式,暂时有表单的通用样式，在组件中可以看到示例。
+通用样式文件可以放在`scss`文件夹下面, 全局样式变量放在uni.scss可以自行在文件后面添加自己需要的全局样式,暂时有表单的通用样式，在组件中可以看到示例。  
+  
+**全局样式**
+如果需要用到全局样式变量的话可以在uni.scss文件后面添加变量,在其他样式中可以直接使用该变量
+eg: 
+```
+$theme-color: #3385ff;
+```
+在首页我们可以直接使用
+```
+.header-title {
+	text-align: center;
+	color: $theme-color;
+}
+```
+
 ### 6. 项目mock数据
 本模板项目的mock数据单独开node服务,使用koa，在`/mock/index.js`中已经有示范代码，可以很方便简单的添加其他的get,post请求
 eg: 

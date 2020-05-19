@@ -1,8 +1,6 @@
 <template>
 	<view class="content">
-		<view class="header-title">
-			zzx-mini-template
-		</view>
+		<mall-menu></mall-menu>
 	</view>
 </template>
 
@@ -24,8 +22,5 @@
 </script>
 
 <style lang="scss">
-.header-title {
-	text-align: center;
-	color: $theme-color;
-}
+
 </style>

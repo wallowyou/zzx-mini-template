@@ -7,27 +7,27 @@
 			}
 		}
 		,{
-		    "path" : "pages/about/about",
+		    "path" : "pages/component/index",
 		    "style" : {
-				"navigationBarTitleText": "关于我们"
+				"navigationBarTitleText": "组件"
 			}
 		}
 		,{
-		    "path" : "pages/platform/smart-elevator/smart-elevator",
+		    "path" : "pages/component/form/form",
 		    "style" : {
-				"navigationBarTitleText": "智慧电梯"
+				"navigationBarTitleText": "表单"
 			}
 		}
         ,{
-            "path" : "pages/platform/walle-property/walle-property",
+            "path" : "pages/component/tabs/tabs",
             "style" : {
-				"navigationBarTitleText": "瓦力物业"
+				"navigationBarTitleText": "tabs"
 			}
         }
         ,{
-            "path" : "pages/platform/fk-reserve/fk-reserve",
+            "path" : "pages/component/shop/shop",
             "style" : {
-				"navigationBarTitleText": "访客预约"
+				"navigationBarTitleText": "商品栏"
 			}
         }
     ],
@@ -46,15 +46,15 @@
 			"text": "首页"
 		},
 		{
-			"pagePath": "pages/about/about",
+			"pagePath": "pages/component/index",
 			"iconPath": "static/img/component.png",
 			"selectedIconPath": "static/img/component-selected.png",
-			"text": "关于"
+			"text": "组件"
 		}]
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
+		"navigationBarTitleText": "zzx-mini-template",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	}

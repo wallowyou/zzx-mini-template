@@ -5510,7 +5510,7 @@ Charts.prototype.showToolTip = function(e) {
       });
       var seriesData = this.opts._series_[index];
       var textList = [{
-        text: option.format ? option.format(seriesData) : seriesData.name + ': ' + seriesData.data,
+        text: this.opts.categories ? option.format(seriesData) : seriesData.name + ': ' + seriesData.data,
         color: seriesData.color
       }];
       var offset = {
