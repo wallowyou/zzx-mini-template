@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<web-view :src="url" @message="getMessage"></web-view>
+		<web-view v-if="url" :src="url" @message="getMessage"></web-view>
 	</view>
 </template>
 
@@ -8,12 +8,14 @@
 	export default {
 		data() {
 			return {
-				url: 'http://193.112.66.91:9000/'
+				url: ''
 			}
 		},
 		onLoad(options) {
 			if (options && options.url) {
 				this.url = options.url;
+			} else if(options && options.code) {
+				this.url = 'http://localhost:8080/?jscode=' + options.code
 			}
 		},
 		methods: {
