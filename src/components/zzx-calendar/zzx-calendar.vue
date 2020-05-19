@@ -35,40 +35,7 @@
 							<view class="dot-show" v-if="item.info" :style="dotStyle">		
 							</view>
 							</view>
-						</template>
-						<template v-else>
-							<template v-if="current - sitem === 1 || current-sitem ===-2">
-								<view class="calendar-day" v-for="(item,index) in predays" :key="index"
-									:class="{
-										'day-hidden': !item.show
-									}">
-									<view
-										class="date"
-										:class="[
-											item.isToday ? todayClass : ''
-											]"
-									>
-									{{item.time.getDate()}}
-									</view>
-								</view>
-							</template>
-							<template v-else>
-								<view class="calendar-day" v-for="(item,index) in nextdays" :key="index"
-									:class="{
-										'day-hidden': !item.show
-									}">
-									<view
-										class="date"
-										:class="[
-											item.isToday ? todayClass : ''
-											]"
-									>
-									{{item.time.getDate()}}
-									</view>
-								</view>
-							</template>
-							
-						</template>
+						</template>		
 					</view>				
 				</swiper-item>			
 			</swiper>
@@ -146,30 +113,6 @@
 				const m = (d.getMonth()+1) <=9 ? `0${d.getMonth()+1}` : d.getMonth()+1;
 				str = `${y}年${m}月`;
 				return str;
-			},
-			predays() {
-				let pres = [];
-				if (this.weekMode) {
-					const d = new Date(this.currentYear, this.currentMonth - 1,this.currentDate)
-					d.setDate(d.getDate() - 7);
-					pres = gegerateDates(d, 'week')
-				} else {
-					const d = new Date(this.currentYear, this.currentMonth - 2,1)
-					pres = gegerateDates(d, 'month')
-				}
-				return pres;
-			},
-			nextdays() {
-				let nexts = [];
-				if (this.weekMode) {
-					const d = new Date(this.currentYear, this.currentMonth - 1,this.currentDate)
-					d.setDate(d.getDate() + 7);
-					nexts = gegerateDates(d, 'week')
-				} else {
-					const d = new Date(this.currentYear, this.currentMonth,1)
-					nexts = gegerateDates(d, 'month')
-				}
-				return nexts;
 			}
 		},
 		data() {
