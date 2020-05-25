@@ -93,7 +93,6 @@ export const gegerateDates = (date = new Date(), type='week') => {
 					isCurrentMonth: true
 				})
 			}
-			console.log('--未展开--', result);
 		} else if (type === 'month') { // 视图展开时的天数
 			// 上个月(补7天)
 			for(let i = weekIndex; i > 0; i--) {
@@ -135,7 +134,6 @@ export const gegerateDates = (date = new Date(), type='week') => {
 					isCurrentMonth: false
 				})
 			}
-			console.log('展开的', result);
 		}
 	}
 	return result;	
