@@ -29,6 +29,12 @@
             "style" : {
 				"navigationBarTitleText": "商品栏"
 			}
+		},
+		{
+            "path" : "pages/component/calendar/calendar",
+            "style" : {
+				"navigationBarTitleText": "日历"
+			}
         }
     ],
 	"tabBar": {

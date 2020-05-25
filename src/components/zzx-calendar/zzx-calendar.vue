@@ -20,20 +20,22 @@
 					<view class="calendar-days">
 						<template v-if="sitem === current">
 							<view class="calendar-day" v-for="(item,index) in days" :key="index"
-							:class="{
-								'day-hidden': !item.show
-							}" @click="clickItem(item)">
-							<view
-								class="date"
-								:class="[
-									item.isToday ? todayClass : '',
-									item.fullDate === selectedDate ? checkedClass : ''
+								:class="{
+									'day-hidden': !item.show
+								}" @click="clickItem(item)">
+								<view
+									class="date"
+									:class="[
+										item.isToday ? todayClass : '',
+										item.fullDate === selectedDate ? checkedClass : '',
+										!item.isCurrentMonth ? 'current-month' : ''
 									]"
-							>
-							{{item.time.getDate()}}
-							</view>
-							<view class="dot-show" v-if="item.info" :style="dotStyle">		
-							</view>
+								>
+									<view>{{item.time.getDate()}}</view>
+									<view>{{item.lunarDate}}</view>
+								</view>
+								<view class="dot-show" v-if="item.info" :style="dotStyle">		
+								</view>
 							</view>
 						</template>		
 					</view>				
@@ -81,6 +83,10 @@
 						background: '#c6c6c6'
 					}
 				}
+			},
+			dateProps: { // 父页面传入的日期
+				type: String,
+				default: ''
 			}
 		},
 		watch:{
@@ -93,13 +99,17 @@
 					}
 				});
 				this.days = days;
+			},
+			dateProps: function(newvalue) {
+				this.selectedDate = formatDate(newvalue, 'yyyy-MM-dd').replace(/-/g, '/');
+				this.initDate(this.selectedDate);
 			}
 		},
 		computed: {
 			sheight() {
 				// 根据年月判断有多少行
 				// 判断该月有多少天
-				let h = '70rpx';
+				let h = '100rpx';
 				if (!this.weekMode) {
 					const d = new Date(this.currentYear, this.currentMonth, 0);
 					const days = d.getDate(); // 判断本月有多少天
@@ -109,7 +119,7 @@
 					}
 					const pre = 8 - day;
 					const rows = Math.ceil((days-pre) / 7) + 1;
-					h = 70 * rows + 'rpx'
+					h = 100 * rows + 'rpx'
 				}
 				return h
 			},
@@ -124,7 +134,7 @@
 		},
 		data() {
 			return {
-				weeks: ['一', '二', '三', '四', '五', '六', '日'],
+				weeks: ['日', '一', '二', '三', '四', '五', '六'],
 				current: 1,
 				currentYear: '',
 				currentMonth: '',
@@ -132,7 +142,7 @@
 				days: [],
 				weekMode: true,
 				swiper: [0,1,2],
-				// dotList: [], // 打点的日期列表
+				// 选择日期
 				selectedDate: formatDate(new Date(), 'yyyy-MM-dd')
 			};
 		},
@@ -168,19 +178,13 @@
 				const nowM = new Date().getMonth() + 1
 				const nowD = new Date().getDate()          // 今日日期 几号
 				const nowW = new Date().getDay();
-				// this.selectedDate = formatDate(new Date(), 'yyyy-MM-dd')
+				
 				this.days = [];
 				let days = [];
 				if (this.weekMode) {
 					days = gegerateDates(date, 'week');
-					// this.selectedDate = days[0].fullDate;
 				} else {
 					days = gegerateDates(date, 'month');
-					// const sel = new Date(this.selectedDate.replace('-', '/').replace('-', '/'));
-					// const isMonth = sel.getFullYear() === this.currentYear && (sel.getMonth() + 1) === this.currentMonth;
-					// if(!isMonth) {
-					// 	this.selectedDate = formatDate(new Date(this.currentYear, this.currentMonth-1,1), 'yyyy-MM-dd')
-					// }
 				}
 				days.forEach(day => {
 					const dot = this.dotList.find(item => {
@@ -222,10 +226,10 @@
 				}
 				this.weekMode = !this.weekMode;
 				let d = new Date(this.currentYear, this.currentMonth - 1, this.currentDate)
-				const sel = new Date(this.selectedDate.replace('-', '/').replace('-', '/'));
+				const sel = new Date(this.selectedDate.replace(/-/g, '/'));
 				const isMonth = sel.getFullYear() === this.currentYear && (sel.getMonth() + 1) === this.currentMonth;
 				if ((this.selectedDate && isMonth) || isweek) {
-					d = new Date(this.selectedDate.replace('-', '/').replace('-', '/'))
+					d = new Date(this.selectedDate.replace(/-/, '/'))
 				}
 				this.initDate(d)
 			},
@@ -350,12 +354,16 @@
 		background: #FF6633;
 		color: #ffffff;
 	}
+	.current-month {
+		color: #999
+	}
 	.date {
-		width: 50upx;
-		height: 50upx;
+		// width: 50upx;
+		height: 100upx;
 		line-height: 50upx;
 		margin: 0 auto;
 		border-radius: 50upx;
+		margin-bottom: 20upx;
 	}
 	.dot-show {
 		margin-top:4upx;
