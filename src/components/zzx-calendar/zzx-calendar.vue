@@ -259,6 +259,8 @@
 				} else {
 					const start = new Date(this.currentYear, this.currentMonth - 1, 1);
 					const end =  new Date(this.currentYear, this.currentMonth , 0);
+					obj.start = start;
+					obj.end = end;
 				}
 				this.$emit('days-change', obj)
 			},
