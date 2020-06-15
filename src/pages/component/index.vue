@@ -10,6 +10,9 @@
 			<view class="plat-item">
 				<navigator url="/pages/component/shop/shop">商品菜单</navigator>			
 			</view>
+			<view class="plat-item">
+				<navigator url="/pages/component/calendar/calendar">日历</navigator>			
+			</view>
 		</view>
 	</view>
 </template>
