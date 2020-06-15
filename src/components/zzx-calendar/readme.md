@@ -49,8 +49,10 @@ dotStyle|Object|{background: '#c6c6c6'}|打点日期的样式style
 事件名|说明
 -|-
 @selected-change | 选中日期改变时触发
+@days-change | 当时间发生变化的时候触发,比如月份或者周变化，或者显示模式改变
 
-更多事件可以在源代码添加，后续更新再添加
+更多事件可以在源代码添加，后续更新再添加  
+
 @selected-change 事件返回属性说明
 ```
 {
@@ -58,6 +60,15 @@ dotStyle|Object|{background: '#c6c6c6'}|打点日期的样式style
 	show: true,// 是否显示
 	fullDate: "2020-04-30",// 选中日期格式化事件
 	isToday: false // 是否是今天
+}
+```
+
+@days-change 事件返回属性说明
+```
+// start和end均返回Date对象 当模式是周的时候返回本周的第一天和最后一天，当模式为月的时候返回本月的1号以及最后一天
+{
+	start: 开始时间,
+	end: 结束时间 
 }
 ```
 ## TODO

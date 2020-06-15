@@ -20,24 +20,55 @@
 					<view class="calendar-days">
 						<template v-if="sitem === current">
 							<view class="calendar-day" v-for="(item,index) in days" :key="index"
-								:class="{
-									'day-hidden': !item.show
-								}" @click="clickItem(item)">
-								<view
-									class="date"
-									:class="[
-										item.isToday ? todayClass : '',
-										item.fullDate === selectedDate ? checkedClass : '',
-										!item.isCurrentMonth ? 'current-month' : ''
+							:class="{
+								'day-hidden': !item.show
+							}" @click="clickItem(item)">
+							<view
+								class="date"
+								:class="[
+									item.isToday ? todayClass : '',
+									item.fullDate === selectedDate ? checkedClass : ''
 									]"
-								>
-									<view>{{item.time.getDate()}}</view>
-									<view>{{item.lunarDate}}</view>
-								</view>
-								<view class="dot-show" v-if="item.info" :style="dotStyle">		
-								</view>
+							>
+							{{item.time.getDate()}}
 							</view>
-						</template>		
+							<view class="dot-show" v-if="item.info" :style="dotStyle">		
+							</view>
+							</view>
+						</template>
+						<template v-else>
+							<template v-if="current - sitem === 1 || current-sitem ===-2">
+								<view class="calendar-day" v-for="(item,index) in predays" :key="index"
+									:class="{
+										'day-hidden': !item.show
+									}">
+									<view
+										class="date"
+										:class="[
+											item.isToday ? todayClass : ''
+											]"
+									>
+									{{item.time.getDate()}}
+									</view>
+								</view>
+							</template>
+							<template v-else>
+								<view class="calendar-day" v-for="(item,index) in nextdays" :key="index"
+									:class="{
+										'day-hidden': !item.show
+									}">
+									<view
+										class="date"
+										:class="[
+											item.isToday ? todayClass : ''
+											]"
+									>
+									{{item.time.getDate()}}
+									</view>
+								</view>
+							</template>
+							
+						</template>
 					</view>				
 				</swiper-item>			
 			</swiper>
@@ -83,10 +114,6 @@
 						background: '#c6c6c6'
 					}
 				}
-			},
-			dateProps: { // 父页面传入的日期
-				type: String,
-				default: ''
 			}
 		},
 		watch:{
@@ -99,17 +126,13 @@
 					}
 				});
 				this.days = days;
-			},
-			dateProps: function(newvalue) {
-				this.selectedDate = formatDate(newvalue, 'yyyy-MM-dd').replace(/-/g, '/');
-				this.initDate(this.selectedDate);
 			}
 		},
 		computed: {
 			sheight() {
 				// 根据年月判断有多少行
 				// 判断该月有多少天
-				let h = '100rpx';
+				let h = '70rpx';
 				if (!this.weekMode) {
 					const d = new Date(this.currentYear, this.currentMonth, 0);
 					const days = d.getDate(); // 判断本月有多少天
@@ -119,7 +142,7 @@
 					}
 					const pre = 8 - day;
 					const rows = Math.ceil((days-pre) / 7) + 1;
-					h = 100 * rows + 'rpx'
+					h = 70 * rows + 'rpx'
 				}
 				return h
 			},
@@ -130,11 +153,35 @@
 				const m = (d.getMonth()+1) <=9 ? `0${d.getMonth()+1}` : d.getMonth()+1;
 				str = `${y}年${m}月`;
 				return str;
+			},
+			predays() {
+				let pres = [];
+				if (this.weekMode) {
+					const d = new Date(this.currentYear, this.currentMonth - 1,this.currentDate)
+					d.setDate(d.getDate() - 7);
+					pres = gegerateDates(d, 'week')
+				} else {
+					const d = new Date(this.currentYear, this.currentMonth - 2,1)
+					pres = gegerateDates(d, 'month')
+				}
+				return pres;
+			},
+			nextdays() {
+				let nexts = [];
+				if (this.weekMode) {
+					const d = new Date(this.currentYear, this.currentMonth - 1,this.currentDate)
+					d.setDate(d.getDate() + 7);
+					nexts = gegerateDates(d, 'week')
+				} else {
+					const d = new Date(this.currentYear, this.currentMonth,1)
+					nexts = gegerateDates(d, 'month')
+				}
+				return nexts;
 			}
 		},
 		data() {
 			return {
-				weeks: ['日', '一', '二', '三', '四', '五', '六'],
+				weeks: ['一', '二', '三', '四', '五', '六', '日'],
 				current: 1,
 				currentYear: '',
 				currentMonth: '',
@@ -142,7 +189,7 @@
 				days: [],
 				weekMode: true,
 				swiper: [0,1,2],
-				// 选择日期
+				// dotList: [], // 打点的日期列表
 				selectedDate: formatDate(new Date(), 'yyyy-MM-dd')
 			};
 		},
@@ -178,13 +225,19 @@
 				const nowM = new Date().getMonth() + 1
 				const nowD = new Date().getDate()          // 今日日期 几号
 				const nowW = new Date().getDay();
-				
+				// this.selectedDate = formatDate(new Date(), 'yyyy-MM-dd')
 				this.days = [];
 				let days = [];
 				if (this.weekMode) {
 					days = gegerateDates(date, 'week');
+					// this.selectedDate = days[0].fullDate;
 				} else {
 					days = gegerateDates(date, 'month');
+					// const sel = new Date(this.selectedDate.replace('-', '/').replace('-', '/'));
+					// const isMonth = sel.getFullYear() === this.currentYear && (sel.getMonth() + 1) === this.currentMonth;
+					// if(!isMonth) {
+					// 	this.selectedDate = formatDate(new Date(this.currentYear, this.currentMonth-1,1), 'yyyy-MM-dd')
+					// }
 				}
 				days.forEach(day => {
 					const dot = this.dotList.find(item => {
@@ -195,6 +248,19 @@
 					}
 				})
 				this.days = days;
+				//  派发事件,时间发生改变
+				let obj = {
+					start: '',
+					end: ''
+				};
+				if (this.weekMode) {
+					obj.start = this.days[0].time;
+					obj.end = this.days[6].time
+				} else {
+					const start = new Date(this.currentYear, this.currentMonth - 1, 1);
+					const end =  new Date(this.currentYear, this.currentMonth , 0);
+				}
+				this.$emit('days-change', obj)
 			},
 			//  上一个
 			daysPre () {
@@ -226,10 +292,10 @@
 				}
 				this.weekMode = !this.weekMode;
 				let d = new Date(this.currentYear, this.currentMonth - 1, this.currentDate)
-				const sel = new Date(this.selectedDate.replace(/-/g, '/'));
+				const sel = new Date(this.selectedDate.replace('-', '/').replace('-', '/'));
 				const isMonth = sel.getFullYear() === this.currentYear && (sel.getMonth() + 1) === this.currentMonth;
 				if ((this.selectedDate && isMonth) || isweek) {
-					d = new Date(this.selectedDate.replace(/-/, '/'))
+					d = new Date(this.selectedDate.replace('-', '/').replace('-', '/'))
 				}
 				this.initDate(d)
 			},
@@ -354,16 +420,12 @@
 		background: #FF6633;
 		color: #ffffff;
 	}
-	.current-month {
-		color: #999
-	}
 	.date {
-		// width: 50upx;
-		height: 100upx;
+		width: 50upx;
+		height: 50upx;
 		line-height: 50upx;
 		margin: 0 auto;
 		border-radius: 50upx;
-		margin-bottom: 20upx;
 	}
 	.dot-show {
 		margin-top:4upx;

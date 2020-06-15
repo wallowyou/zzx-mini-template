@@ -1,6 +1,6 @@
 <template>
     <view>
-        <calendar />
+        <calendar @selected-change="selectDate" @days-change="daysChange"/>
     </view>
 </template>
 
@@ -13,7 +13,15 @@ export default {
     },
     data() {
         return {}
-    }
+    },
+	methods: {
+		selectDate(e) {
+			console.log(e);
+		},
+		daysChange(e) {
+			console.log(e)
+		}
+	}
 }
 </script>
 

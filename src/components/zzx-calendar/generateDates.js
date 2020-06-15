@@ -9,9 +9,6 @@
 * 解决方式: 建议将时间都格式化成'2020/04/16 00:00:00'的格式
 * 函数示例: formatDate(new Date(), 'YYYY/MM/dd hh:mm:ss')
 */
-
-import calendar from './solar2lunar';
-
 export const formatDate = (date, fmt) => {
   if (/(y+)/.test(fmt)) {
     fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
@@ -48,7 +45,13 @@ export const equalDate = (d1, d2) => {
 /* 比较时间,时间格式为2020-04-04
 */
 export const dateEqual = (before, after) => {
-	return (new Date(before.replace(/-/g, '/')).getTime() - new Date(after.replace(/-/g, '/')).getTime()) === 0
+	before = new Date(before.replace('-', '/').replace('-', '/'))
+	after = new Date(after.replace('-', '/').replace('-', '/'))
+	if (before.getTime() - after.getTime() === 0) {
+		return true
+	} else {
+		return false
+	}
 }
 
 export const gegerateDates = (date = new Date(), type='week') => {
@@ -65,49 +68,40 @@ export const gegerateDates = (date = new Date(), type='week') => {
 			const dobj = new Date(y,m,1);
 			weekIndex = dobj.getDay() === 0 ? 7 : dobj.getDay();
 		}
-		// 视图未展开时一周的天数
 		if (type === 'week') {
-			for(let i = weekIndex; i >0; i--) {
+			for(let i = weekIndex - 1; i >0; i--) {
 				const dtemp = new Date(y,m,d);
 				dtemp.setDate(dtemp.getDate() - i);
-				// 农历的处理
 				result.push({
 					time: dtemp,
 					show: true,
 					fullDate: formatDate(dtemp, 'yyyy-MM-dd'),
-					// 农历
-					lunarDate: calendar.solar2lunar(dtemp.getFullYear(), dtemp.getMonth() + 1, dtemp.getDate()).IDayCn,
-					isToday: equalDate(new Date(), dtemp),
-					isCurrentMonth: true
+					isToday: equalDate(new Date(), dtemp)
 				})
 			}
-			for(let i = 0; i <= 6 - weekIndex; i++) {
+			for(let i = 0; i <= 7 - weekIndex; i++) {
 				const dtemp = new Date(y,m,d);
 				dtemp.setDate(dtemp.getDate() + i);
 				result.push({
 					time: dtemp,
 					show: true,
 					fullDate: formatDate(dtemp, 'yyyy-MM-dd'),
-					lunarDate: calendar.solar2lunar(dtemp.getFullYear(), dtemp.getMonth() + 1, dtemp.getDate()).IDayCn,
-					isToday: equalDate(new Date(), dtemp),
-					isCurrentMonth: true
+					isToday: equalDate(new Date(), dtemp)
 				})
 			}
-		} else if (type === 'month') { // 视图展开时的天数
-			// 上个月(补7天)
-			for(let i = weekIndex; i > 0; i--) {
+		} else if (type === 'month') {
+			// 上个月
+			for(let i = weekIndex - 1; i > 0; i--) {
 				const dtemp = new Date(y,m,1);
 				dtemp.setDate(dtemp.getDate() - i);
 				result.push({
 					time: dtemp,
-					show: true,
+					show: false,
 					fullDate: formatDate(dtemp, 'yyyy-MM-dd'),
-					lunarDate: calendar.solar2lunar(dtemp.getFullYear(), dtemp.getMonth() + 1, dtemp.getDate()).IDayCn,
-					isToday: equalDate(new Date(), dtemp),
-					isCurrentMonth: false
+					isToday: equalDate(new Date(), dtemp)
 				});
 			}
-			// 这个月的日期(有大月31小月30)
+			// 这个月的日期
 			for (let i = 0; i < days; i++) {
 				const dtemp = new Date(y,m,1);
 				dtemp.setDate(dtemp.getDate() + i);
@@ -115,23 +109,19 @@ export const gegerateDates = (date = new Date(), type='week') => {
 					time: dtemp,
 					show: true,
 					fullDate: formatDate(dtemp, 'yyyy-MM-dd'),
-					lunarDate: calendar.solar2lunar(dtemp.getFullYear(), dtemp.getMonth() + 1, dtemp.getDate()).IDayCn,
-					isToday: equalDate(new Date(), dtemp),
-					isCurrentMonth: true
+					isToday: equalDate(new Date(), dtemp)
 				});
 			}
 			const len = 42 - result.length;
-			// 下个月的日期(补7天)
+			// 下个月的日期
 			for (let i = 1; i <= len;i++) {
 				const dtemp = new Date(y,m+1,0);
 				dtemp.setDate(dtemp.getDate() + i);
 				result.push({
 					time: dtemp,
-					show: true,
+					show: false,
 					fullDate: formatDate(dtemp, 'yyyy-MM-dd'),
-					lunarDate: calendar.solar2lunar(dtemp.getFullYear(), dtemp.getMonth() + 1, dtemp.getDate()).IDayCn,
-					isToday: equalDate(new Date(), dtemp),
-					isCurrentMonth: false
+					isToday: equalDate(new Date(), dtemp)
 				})
 			}
 		}
