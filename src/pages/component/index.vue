@@ -13,6 +13,9 @@
 			<view class="plat-item">
 				<navigator url="/pages/component/calendar/calendar">日历</navigator>			
 			</view>
+			<view class="plat-item">
+				<navigator url="/pages/component/picker-view/picker-view">时间选择</navigator>			
+			</view>
 		</view>
 	</view>
 </template>

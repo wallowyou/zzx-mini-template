@@ -36,6 +36,10 @@
 				"navigationBarTitleText": "日历"
 			}
         }
+        ,{
+            "path" : "pages/component/picker-view/picker-view",
+            "style" : {}
+        }
     ],
 	"tabBar": {
 		"color": "#707070",
